@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-const DEPLOYED='https://13.60.243.29:80'
+const DEPLOYED='https://16.171.87.73:80'
 const LOCALHOST='http://localhost:5454'
 
 export const API_BASE_URL = DEPLOYED
