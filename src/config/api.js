@@ -1,35 +1,30 @@
-
 import axios from 'axios';
-//const DEPLOYED='http://16.171.87.73:80'
-const LOCALHOST='http://localhost:5454'
 
+let API_BASE_URL = 'http://localhost:5454'; // Default URL
 
-// export const API_BASE_URL = DEPLOYED
+export const fetchApiBaseUrl = async () => {
+  try {
+    const response = await axios.get('https://github.com/venkatareddytadi/ecommerce-frontend/blob/master/backendUrl.json');
+    API_BASE_URL = response.data.url;
+  } catch (error) {
+    console.error('Error fetching Ngrok URL:', error);
+  }
+};
 
-const [apiBaseUrl, setApiBaseUrl] = useState('');
+const initializeApiBaseUrl = async () => {
+  await fetchApiBaseUrl();
+};
 
-useEffect(() => {
-  const fetchNgrokUrl = async () => {
-    try {
-      const response = await axios.get('https://github.com/venkatareddytadi/ecommerce-frontend/blob/master/backendUrl.json');
-      setApiBaseUrl(response.data.url);
-    } catch (error) {
-      console.error('Error fetching Ngrok URL:', error);
-    }
-  };
-
-  fetchNgrokUrl();
-}, []);
-
+initializeApiBaseUrl();
 
 const api = axios.create({
-  baseURL: apiBaseUrl,
+  baseURL: API_BASE_URL,
 });
 
 const token = localStorage.getItem('jwt');
 
 api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
 api.defaults.headers.post['Content-Type'] = 'application/json';
 
+export { API_BASE_URL };
 export default api;
