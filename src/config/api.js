@@ -1,12 +1,29 @@
 
 import axios from 'axios';
-const DEPLOYED='http://16.171.87.73:80'
+//const DEPLOYED='http://16.171.87.73:80'
 const LOCALHOST='http://localhost:5454'
 
-export const API_BASE_URL = DEPLOYED
+
+// export const API_BASE_URL = DEPLOYED
+
+const [apiBaseUrl, setApiBaseUrl] = useState('');
+
+useEffect(() => {
+  const fetchNgrokUrl = async () => {
+    try {
+      const response = await axios.get('https://github.com/venkatareddytadi/ecommerce-frontend/blob/master/backendUrl.json');
+      setApiBaseUrl(response.data.url);
+    } catch (error) {
+      console.error('Error fetching Ngrok URL:', error);
+    }
+  };
+
+  fetchNgrokUrl();
+}, []);
+
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: apiBaseUrl,
 });
 
 const token = localStorage.getItem('jwt');
